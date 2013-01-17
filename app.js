@@ -61,7 +61,7 @@ RFall.collisionDetect = function () {
   var plX = RFall.player.x
   var plRightX = plX + RFall.player.width
   var plY = RFall.player.y
-  var fuzziness = 2
+  var fuzziness = 3
 
   var leftColl = function ( rock ) {
     var rockRightX = rock.x + rock.width
