@@ -1,9 +1,11 @@
 RFall.init = function () {
+  RFall.gameSpeed = 50 // increment in microseconds
+  RFall.elapsedTime = 0 // microseconds
+  RFall.winTime = 30000 // microseconds
+  RFall.canvasWidth = 500 //px
+  RFall.canvasHeight = 500 //px
   RFall.player = new RFall.Player()
   RFall.rocks = new RFall.Rocks()
-  RFall.gameSpeed = 25
-  RFall.elapsedTime = 0
-  RFall.winTime = 30000
   RFall.appStep()
 }
 
@@ -15,11 +17,13 @@ RFall.appStep = function () {
     RFall.loseGame()
   }
   else {
-    RFall.elapsedTime += RFall.gameSpeed
+//    var timeStep = Math.floor(RFall.initGameSpeed / (RFall.elapsedTime / 1000)) + 1
+    var timeStep = RFall.gameSpeed
+    RFall.elapsedTime += timeStep
     if (RFall.elapsedTime > RFall.winTime)
       RFall.winGame()
     else
-      setTimeout("RFall.appStep()",RFall.gameSpeed)
+      setTimeout("RFall.appStep()", timeStep )
   }
 }
 
@@ -37,7 +41,7 @@ RFall.draw = function () {
   var canvas = document.getElementById('gameCanvas')
   if (canvas.getContext){
     var ctx = canvas.getContext('2d')
-    ctx.clearRect(0,0,250,400);
+    ctx.clearRect(0,0,RFall.canvasWidth,RFall.canvasHeight)
     ctx.save()
     timeText = "Time left: " + (RFall.winTime - RFall.elapsedTime).toString()
     ctx.fillText(timeText, 0, 15)
@@ -61,6 +65,7 @@ RFall.collisionDetect = function () {
   var plX = RFall.player.x
   var plRightX = plX + RFall.player.width
   var plY = RFall.player.y
+  var plBottomY = plY + RFall.player.height
   var fuzziness = 3
 
   var leftColl = function ( rock ) {
@@ -73,7 +78,7 @@ RFall.collisionDetect = function () {
   
   var rightColl = function ( rock ) {
     var rockRightX = rock.x + rock.width
-    if  (plRightX > rock.x + fuzziness && plRightX < rockRightX- fuzziness)
+    if  (plRightX > rock.x + fuzziness && plRightX < rockRightX - fuzziness)
       return true
     else
       return false
@@ -81,7 +86,7 @@ RFall.collisionDetect = function () {
 
   for (r in RFall.rocks.rocks) {
     var rock = RFall.rocks.rocks[r]
-    if (plY < rock.y + rock.height - fuzziness) {
+    if (plY < rock.y + rock.height - fuzziness && plBottomY > rock.y + fuzziness) {
       if ( leftColl(rock) || rightColl(rock) )
         return true
     }

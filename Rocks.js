@@ -5,21 +5,22 @@ RFall.Rock = function () {
   this.y = 0
   this.width = 0
   this.height = 0
-  this.r = 8
+  this.baseSpeed = 8
   this.resetRock()
 }
 
 RFall.Rock.prototype.moveDown = function () {
-  this.y = this.y + 4
-  if (this.y > 400)
+  var speed = this.baseSpeed * (1 + 2 * RFall.elapsedTime / RFall.winTime)
+  this.y = this.y + speed 
+  if (this.y > RFall.canvasHeight)
     this.resetRock()
 }
 
 RFall.Rock.prototype.resetRock = function () {
-  this.x = Math.floor( RFall.randomMinMax(0, 230) )
-  this.y = Math.floor( RFall.randomMinMax(0, -800) )
   this.width = Math.floor( RFall.randomMinMax(25, 60) )
   this.height = Math.floor( RFall.randomMinMax(25, 60) )
+  this.x = Math.floor( RFall.randomMinMax(0, RFall.canvasWidth ) )
+  this.y = Math.floor( RFall.randomMinMax(0, -(RFall.canvasHeight + 300)) )
 }
 
 RFall.Rocks = function () {
