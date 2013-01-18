@@ -2,3 +2,7 @@ Rockfall! is a basic HTML5/Javascript game in which one must avoid the falling r
 
 
 To run the game, simply grab the files and open index.html in a browser capable of rendering HTML5 content.
+
+Controls:
+
+Left/right arrow keys -- move left or right
