@@ -5,7 +5,7 @@ RFall.Rock = function () {
   this.y = 0
   this.width = 0
   this.height = 0
-  this.baseSpeed = 8
+  this.baseSpeed = 2
   this.resetRock()
 }
 
@@ -20,13 +20,13 @@ RFall.Rock.prototype.resetRock = function () {
   this.width = Math.floor( RFall.randomMinMax(25, 60) )
   this.height = Math.floor( RFall.randomMinMax(25, 60) )
   this.x = Math.floor( RFall.randomMinMax(0, RFall.canvasWidth ) )
-  this.y = Math.floor( RFall.randomMinMax(0, -(RFall.canvasHeight + 300)) )
+  this.y = Math.floor( RFall.randomMinMax(0, - 2 * RFall.canvasHeight) )
 }
 
 RFall.Rocks = function () {
   this.rocks = []
   var i = 0
-  for ( i = 0; i < 8; i++ ) {
+  for ( i = 0; i < 15; i++ ) {
     this.rocks.push( new RFall.Rock() )
   }
 }

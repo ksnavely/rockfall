@@ -18,12 +18,14 @@ RFall.Player.prototype.move = function ( direction ) {
     this.x -= this.speed
     if (this.x < 0)
       this.x = 0
+    RFall.draw()
   }
   if (direction == "right") {
     this.img = this.imgRight
     this.x += this.speed
     if (this.x > RFall.canvasWidth - this.width)
       this.x = RFall.canvasWidth - this.width
+    RFall.draw()
   }
 }
 
@@ -35,5 +37,5 @@ RFall.Player.prototype.resetPosition = function () {
 // draw( ctx )
 // ctx is a 2D canvas context
 RFall.Player.prototype.draw = function (ctx) {
-  ctx.drawImage(RFall.player.img, RFall.player.x, RFall.player.y)
+  ctx.drawImage(RFall.player.img, RFall.player.x, RFall.player.y, this.width, this.height)
 }

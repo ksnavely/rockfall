@@ -1,5 +1,5 @@
 RFall.init = function () {
-  RFall.gameSpeed = 50 // increment in microseconds
+  RFall.gameSpeed = 10 // increment in microseconds
   RFall.elapsedTime = 0 // microseconds
   RFall.winTime = 30000 // microseconds
   RFall.canvasWidth = 500 //px
@@ -10,20 +10,17 @@ RFall.init = function () {
 }
 
 RFall.appStep = function () {
-  RFall.draw()
-  RFall.rocks.moveRocksDown()
-
   if (RFall.collisionDetect()) {
     RFall.loseGame()
   }
   else {
-//    var timeStep = Math.floor(RFall.initGameSpeed / (RFall.elapsedTime / 1000)) + 1
-    var timeStep = RFall.gameSpeed
-    RFall.elapsedTime += timeStep
+    RFall.rocks.moveRocksDown()
+    RFall.draw()
+    RFall.elapsedTime += RFall.gameSpeed
     if (RFall.elapsedTime > RFall.winTime)
       RFall.winGame()
     else
-      setTimeout("RFall.appStep()", timeStep )
+      setTimeout("RFall.appStep()", RFall.gameSpeed )
   }
 }
 
@@ -70,7 +67,7 @@ RFall.collisionDetect = function () {
 
   var leftColl = function ( rock ) {
     var rockRightX = rock.x + rock.width
-    if  (plX > rock.x + fuzziness && plX < rockRightX - fuzziness)
+    if  (plX >= rock.x + fuzziness && plX <= rockRightX - fuzziness)
       return true
     else
       return false
@@ -78,7 +75,7 @@ RFall.collisionDetect = function () {
   
   var rightColl = function ( rock ) {
     var rockRightX = rock.x + rock.width
-    if  (plRightX > rock.x + fuzziness && plRightX < rockRightX - fuzziness)
+    if  (plRightX >= rock.x + fuzziness && plRightX <= rockRightX - fuzziness)
       return true
     else
       return false
@@ -86,7 +83,7 @@ RFall.collisionDetect = function () {
 
   for (r in RFall.rocks.rocks) {
     var rock = RFall.rocks.rocks[r]
-    if (plY < rock.y + rock.height - fuzziness && plBottomY > rock.y + fuzziness) {
+    if (plY <= rock.y + rock.height - fuzziness && plBottomY >= rock.y + fuzziness) {
       if ( leftColl(rock) || rightColl(rock) )
         return true
     }
