@@ -3,7 +3,6 @@ RFall.Player = function () {
   this.imgRight = RFall.resources.images.playerRight 
   this.img = this.imgRight 
   this.hurting = false
-  this.hearts = 2
   this.x = 0 
   this.y = 0
   this.width = 27
@@ -66,17 +65,17 @@ RFall.Player.prototype.resetPosition = function () {
 // ctx is a 2D canvas context
 RFall.Player.prototype.draw = function (ctx) {
   ctx.drawImage(RFall.player.img, RFall.player.x, RFall.player.y, this.width, this.height)
-  for (var h = 1; h <= this.hearts; h++){
+  for (var h = 1; h <= RFall.hearts; h++){
     ctx.drawImage(RFall.resources.images.heart, RFall.canvasWidth - (40 * h), 0, 40, 40)
   }
 }
 
-RFall.Player.prototype.removeHeart = function (ctx) {
-  --this.hearts
+RFall.Player.prototype.removeHeart = function () {
+  --RFall.hearts
 }
 
 RFall.Player.prototype.isDead = function () {
-  if (this.hearts < 0)
+  if (RFall.hearts < 0)
     return true
   else
     return false

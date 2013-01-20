@@ -5,6 +5,8 @@ RFall.init = function () {
   RFall.canvasWidth = 500 // px
   RFall.canvasHeight = 500 // px
   RFall.difficulty = 1
+  RFall.startingHearts = 2
+  RFall.hearts = RFall.startingHearts
   RFall.resources.loadImages( RFall.newGame )
 }
 
@@ -43,9 +45,8 @@ RFall.winGame = function () {
 
 RFall.loseGame = function () {
   alert( "You were crushed at difficulty " + RFall.difficulty + "! Hit ok to play again." )
-  --RFall.difficulty
-  if (RFall.difficulty < 0)
-    RFall.difficulty = 0
+  RFall.difficulty = 0
+  RFall.hearts = RFall.startingHearts
   RFall.newGame()
 }
 
