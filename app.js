@@ -38,7 +38,7 @@ RFall.appStep = function () {
 }
 
 RFall.winGame = function () {
-  alert( "You won the game at difficulty " + RFall.difficulty + "! Hit ok to play again." )
+  alert( "You beat level " + RFall.difficulty + "! Hit ok to turn the up heat." )
   ++RFall.difficulty
   RFall.newGame()
 }
