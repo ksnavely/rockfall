@@ -104,8 +104,10 @@ RFall.drawSplash = function () {
 RFall.drawStats = function (ctx) {
     timeText = "Time left: " + (RFall.winTime - RFall.elapsedTime).toString()
     diffText = "Difficulty: " + RFall.difficulty.toString()
-    ctx.clearRect(0,0,100,32)
+    ctx.fillStyle = "rgb(255,255,255)"
+    ctx.fillRect(0,0,100,32)
     ctx.strokeRect(0,0,100,32)
+    ctx.fillStyle = "rgb(0,0,0)"
     ctx.fillText(timeText, 10, 12)
     ctx.fillText(diffText, 10, 28)
 }
