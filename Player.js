@@ -1,41 +1,83 @@
 RFall.Player = function () {
-  this.imgLeft = new Image()
-  this.imgLeft.src = "imgs/playerLeft.png"
-  this.imgRight = new Image()
-  this.imgRight.src = "imgs/playerRight.png"
-  this.img = this.imgRight
+  this.imgLeft = RFall.resources.images.playerLeft
+  this.imgRight = RFall.resources.images.playerRight 
+  this.img = this.imgRight 
+  this.hurting = false
+  this.hearts = 2
   this.x = 0 
   this.y = 0
-  this.width = 32
+  this.width = 27
   this.height = 56 
-  this.speed = 20
+  this.speed = 15
   this.resetPosition()
+}
+
+RFall.Player.prototype.takeDamage = function () {
+  RFall.player.removeHeart()
+  RFall.player.setHurting( true )
+  setTimeout("RFall.player.setHurting( false )",1500)
+}
+
+RFall.Player.prototype.isHurting = function () {
+  return this.hurting
+}
+
+RFall.Player.prototype.setHurting = function ( bool ) {
+  var currentlyLeft = (this.img == this.imgLeft)
+
+  if (bool == false) {
+    this.imgLeft = RFall.resources.images.playerLeft
+    this.imgRight = RFall.resources.images.playerRight 
+    this.hurting = false
+  }
+  if (bool == true) {
+    this.imgLeft = RFall.resources.images.playerHurtLeft
+    this.imgRight = RFall.resources.images.playerHurtRight 
+    this.hurting = true
+  }
+
+  this.img = (currentlyLeft) ? this.imgLeft : this.imgRight
+  RFall.draw()
 }
 
 RFall.Player.prototype.move = function ( direction ) {
   if (direction == "left") {
     this.img = this.imgLeft
     this.x -= this.speed
-    if (this.x < 0)
-      this.x = 0
+    if (this.x < RFall.cage.cageLBound)
+      this.x = RFall.cage.cageLBound 
     RFall.draw()
   }
   if (direction == "right") {
     this.img = this.imgRight
     this.x += this.speed
-    if (this.x > RFall.canvasWidth - this.width)
-      this.x = RFall.canvasWidth - this.width
+    if (this.x > RFall.cage.cageRBound - this.width)
+      this.x = RFall.cage.cageRBound - this.width
     RFall.draw()
   }
 }
 
 RFall.Player.prototype.resetPosition = function () {
-  this.x = Math.floor( RFall.randomMinMax(0, RFall.canvasWidth - this.width) )
-  this.y = RFall.canvasHeight - this.height 
+  this.x = Math.floor( RFall.randomMinMax(RFall.cage.cageLBound, RFall.cage.cageRBound - this.width) )
+  this.y = RFall.canvasHeight - RFall.cage.cageFloorHeight - this.height
 }
 
 // draw( ctx )
 // ctx is a 2D canvas context
 RFall.Player.prototype.draw = function (ctx) {
   ctx.drawImage(RFall.player.img, RFall.player.x, RFall.player.y, this.width, this.height)
+  for (var h = 1; h <= this.hearts; h++){
+    ctx.drawImage(RFall.resources.images.heart, RFall.canvasWidth - (40 * h), 0, 40, 40)
+  }
+}
+
+RFall.Player.prototype.removeHeart = function (ctx) {
+  --this.hearts
+}
+
+RFall.Player.prototype.isDead = function () {
+  if (this.hearts < 0)
+    return true
+  else
+    return false
 }

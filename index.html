@@ -1,17 +1,33 @@
+<!doctype html>
+<html lang="en">
 <html>
   <head>
+    <meta charset="utf-8">
     <title>Rockfall!</title>
     <script type="text/javascript">
       var RFall = function () {}
     </script>
+    <script src="resources.js"></script>
+    <script src="Mineshaft.js"></script>
+    <script src="Cage.js"></script>
     <script src="Rocks.js"></script>
     <script src="Player.js"></script>
     <script src="app.js"></script>
     <style type="text/css">
       canvas { border: 2px solid black; }
+      #controls { max-width:400px }
+      #title { text-align: center }
+      #main-table {margin-left: auto; margin-right: auto}
     </style>
   </head>
   <body onload="RFall.init();">
-    <canvas id="gameCanvas" width="500" height="500"></canvas>
+    <h3 id="title">Rockfall!</h3>
+    <table id="main-table">
+      <tr><td id="controls"><h4>Controls</h4>
+              <p>Left/right arrow -- go left or right.</p>
+              <p>Survive until the timer runs out to win. The game will get harder, starting at level 1, although if you die enough you'll drop to level 0.</p></td>
+          <td><canvas id="gameCanvas" width="500" height="500"></canvas></td>
+      </tr>
+    </table>
   </body>
 </html>
