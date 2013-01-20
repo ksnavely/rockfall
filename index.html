@@ -15,17 +15,29 @@
     <script src="app.js"></script>
     <style type="text/css">
       canvas { border: 2px solid black; }
+      body { background-color: #252525; color: #FFFFFF; }
       #controls { max-width:400px }
-      #title { text-align: center }
+      #title { text-align: center; font-weight: bold; }
       #main-table {margin-left: auto; margin-right: auto}
     </style>
   </head>
   <body onload="RFall.init();">
-    <h3 id="title">Rockfall!</h3>
     <table id="main-table">
-      <tr><td id="controls"><h4>Controls</h4>
-              <p>Left/right arrow -- go left or right.</p>
-              <p>Survive until the timer runs out to win. The game will get harder, starting at level 1, although if you die you'll drop to level 0. You begin with two hearts and lose one if struck by a rock. If you are struck with no hearts, you will die.</p></td>
+      <tr><td id="controls">
+            <h2 id="title">Rockfall!</h2>
+            <p>
+              <h4>Controls:</h4>
+              <ul>
+                <li>Left/Right arrows: go left/right</li>
+                <li>p: pause</li>
+                <li>n: new game</li>
+              </ul>
+            </p>
+              <h4>Info:</h4>
+            <p>
+            Survive until the timer runs out to win. The game will get harder, starting at level 1, although if you die you'll drop to level 0. You begin with two hearts and lose one if struck by a rock. If you are struck with no hearts, you will die.
+            </p>
+          </td>
           <td><canvas id="gameCanvas" width="500" height="500"></canvas></td>
       </tr>
     </table>

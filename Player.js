@@ -14,7 +14,8 @@ RFall.Player = function () {
 RFall.Player.prototype.takeDamage = function () {
   RFall.player.removeHeart()
   RFall.player.setHurting( true )
-  setTimeout("RFall.player.setHurting( false )",1500)
+  if (!this.isDead())
+    setTimeout("RFall.player.setHurting( false )",1500)
 }
 
 RFall.Player.prototype.isHurting = function () {

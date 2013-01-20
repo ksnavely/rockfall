@@ -7,7 +7,10 @@ RFall.init = function () {
   RFall.difficulty = 1
   RFall.startingHearts = 2
   RFall.hearts = RFall.startingHearts
-  RFall.resources.loadImages( RFall.newGame )
+  RFall.paused = false
+  RFall.playing = false
+  window.addEventListener('keydown',RFall.onKeyDown,true)
+  RFall.resources.loadImages( RFall.drawSplash )
 }
 
 RFall.newGame = function () {
@@ -16,24 +19,31 @@ RFall.newGame = function () {
   RFall.player = new RFall.Player()
   RFall.rocks = new RFall.Rocks()
   RFall.elapsedTime = 0
+  RFall.playing = true
   RFall.appStep()
 }
 
 RFall.appStep = function () {
-  RFall.rocks.collisionDetect()
-
-  if (RFall.player.isDead()) {
-    RFall.loseGame()
+  if (RFall.paused) {
+    RFall.drawPaused()
+    setTimeout("RFall.appStep()", 100)
   }
-  else {
-    RFall.rocks.moveRocksDown()
-    RFall.mineshaft.moveUp()
-    RFall.draw()
-    RFall.elapsedTime += RFall.gameSpeed
-    if (RFall.elapsedTime > RFall.winTime)
-      RFall.winGame()
-    else
-      setTimeout("RFall.appStep()", RFall.gameSpeed )
+  else if (RFall.playing) {
+    RFall.rocks.collisionDetect()
+
+    if (RFall.player.isDead()) {
+      RFall.loseGame()
+    }
+    else {
+      RFall.rocks.moveRocksDown()
+      RFall.mineshaft.moveUp()
+      RFall.draw()
+      RFall.elapsedTime += RFall.gameSpeed
+      if (RFall.elapsedTime > RFall.winTime)
+        RFall.winGame()
+      else
+        setTimeout("RFall.appStep()", RFall.gameSpeed )
+    }
   }
 }
 
@@ -44,10 +54,10 @@ RFall.winGame = function () {
 }
 
 RFall.loseGame = function () {
-  alert( "You were crushed at difficulty " + RFall.difficulty + "! Hit ok to play again." )
+  RFall.playing = false
   RFall.difficulty = 0
   RFall.hearts = RFall.startingHearts
-  RFall.newGame()
+  RFall.drawSplash()
 }
 
 RFall.draw = function () {
@@ -67,6 +77,30 @@ RFall.draw = function () {
   }
 }
 
+RFall.drawPaused = function () {
+  var canvas = document.getElementById('gameCanvas')
+  if (canvas.getContext){
+    var ctx = canvas.getContext('2d')
+    ctx.save()
+    
+    ctx.drawImage(RFall.resources.images.paused,0,200)
+
+    ctx.restore()
+  }
+}
+
+RFall.drawSplash = function () {
+  var canvas = document.getElementById('gameCanvas')
+  if (canvas.getContext){
+    var ctx = canvas.getContext('2d')
+    ctx.save()
+    
+    ctx.drawImage(RFall.resources.images.splash,0,0)
+
+    ctx.restore()
+  }
+}
+
 RFall.drawStats = function (ctx) {
     timeText = "Time left: " + (RFall.winTime - RFall.elapsedTime).toString()
     diffText = "Difficulty: " + RFall.difficulty.toString()
@@ -77,16 +111,29 @@ RFall.drawStats = function (ctx) {
 }
 
 RFall.onKeyDown = function (evt) {
-  if (evt.keyCode == 37) {
-    RFall.player.move("left")
+  if (RFall.playing) {
+    if (evt.keyCode == 37) {
+      RFall.player.move("left")
+    }
+    if (evt.keyCode == 39) {
+      RFall.player.move("right")
+    }
+    if (evt.keyCode == 80) {
+      RFall.pause()
+    }
   }
-  if (evt.keyCode == 39) {
-    RFall.player.move("right")
+  if (!RFall.playing) {
+    if (evt.keyCode == 78) {
+      RFall.newGame()
+    }
   }
+}
+
+RFall.pause = function () {
+  RFall.paused = !RFall.paused
 }
 
 RFall.randomMinMax = function ( min, max ) {
   return Math.random() * (max - min) + min;
 }
 
-window.addEventListener('keydown',RFall.onKeyDown,true)

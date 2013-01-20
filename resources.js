@@ -10,7 +10,10 @@ RFall.resources.sources = {
   mineShaft: "imgs/mineShaft.gif",
   cage: "imgs/cage.png",
   rock: "imgs/rock.png",
-  heart: "imgs/heart.png"
+  heart: "imgs/heart.png",
+  paused: "imgs/paused.png",
+  splash: "imgs/splash.png"
+
 }
 
 RFall.resources.loadImages = function( callback ) {
