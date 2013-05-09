@@ -6,9 +6,6 @@ RFall.init = function () {
   RFall.canvasWidth = 500 // px
   RFall.canvasHeight = 500 // px
   RFall.difficulty = 1
-  RFall.slowMoFactor = 2
-  RFall.slowMoCoolDown = false
-  RFall.slowMoCoolDownTime = 9000 // milliseconds
   RFall.startingHearts = 2
   RFall.hearts = RFall.startingHearts
   RFall.paused = false
@@ -22,6 +19,7 @@ RFall.newGame = function () {
   RFall.cage = new RFall.Cage()
   RFall.player = new RFall.Player()
   RFall.rocks = new RFall.Rocks()
+  RFall.effectsManager = new RFall.EffectsManager()
   RFall.elapsedTime = 0
   RFall.playing = true
   RFall.appStep()
@@ -135,7 +133,7 @@ RFall.onKeyDown = function (evt) {
   }
   if (RFall.playing) {
     if (evt.keyCode == 83) { // s
-      RFall.slowTime( 3000 ) // milliseconds
+      RFall.effectsManager.start("slowTime")
     }
   }
 }
@@ -146,29 +144,6 @@ RFall.pause = function () {
 
 RFall.randomMinMax = function ( min, max ) {
   return Math.random() * (max - min) + min;
-}
-
-// t milliseconds
-RFall.slowTime = function ( t ) {
-  if (!RFall.slowMoCoolDown) {
-    setTimeout("RFall.isSlowMoCoolDown(true)", RFall.slowMoCoolDownTime)
-    setTimeout("RFall.setGameSpeed(" + RFall.gameSpeed0 + ")", t)
-    RFall.gameSpeed = RFall.gameSpeed * RFall.slowMoFactor
-  }
-}
-
-RFall.isSlowMoCoolDown = function ( tf ) {
-  if (tf == undefined)
-    return RFall.slowMoCoolDown
-  if (tf == true) {
-    setTimeout("RFall.isSlowMoCoolDown(false)", RFall.slowMoCoolDownTime)
-    RFall.slowMoCoolDown = true
-    return
-  }
-  if (tf == false) {
-    RFall.slowMoCoolDown = false
-    return
-  }
 }
 
 RFall.setGameSpeed = function ( newGameSpeed ) {
